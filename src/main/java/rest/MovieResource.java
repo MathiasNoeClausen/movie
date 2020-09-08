@@ -49,21 +49,26 @@ public class MovieResource {
     @Path("all")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public String getAll() {
-        throw new UnsupportedOperationException();
+    public List<MovieDTO> getAll() {
+        List<MovieDTO> allefilm = FACADE.getAllMovies();
+        return allefilm;
+       
     }
 
     @Path("/{id}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public String getById(@PathParam("id") int id) {
-        throw new UnsupportedOperationException();
+    public MovieDTO getById(@PathParam("id") int id) {
+        MovieDTO movieById = FACADE.getMovieById(id);
+        return movieById;
+        
     }
 
     @Path("title/{title}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public Response getByTitle(@PathParam("title") String title) {
+        Response.ok().entity(GSON.toJson(FACADE.getMoviesByTitle(title))).build();
         throw new UnsupportedOperationException();
     }
     
