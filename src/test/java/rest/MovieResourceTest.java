@@ -1,5 +1,7 @@
 package rest;
 
+import facades.MovieFacade;
+import dtos.MovieDTO;
 import entities.Movie;
 import utils.EMF_Creator;
 import io.restassured.RestAssured;
@@ -8,6 +10,7 @@ import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -19,8 +22,11 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.MatcherAssert.assertThat;
+import org.hamcrest.Matchers;
 import static org.hamcrest.Matchers.*;
 import org.junit.jupiter.api.AfterAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -124,13 +130,26 @@ public class MovieResourceTest {
 
     @Test
     public void testGetAll() {
-        //TODO
+        List<MovieDTO> movies = MovieFacade.getAllMovies();
+        assertEquals(3, MovieFacade.getMovieCount(), "Expects three movies in the database");
+        assertThat(movies, everyItem(hasProperty("title")));
+        assertThat(movies, hasItems( // or contains or containsInAnyOrder 
+                Matchers.<MovieDTO>hasProperty("title", is("Harry Potter and the Philosopher's Stone")),
+                Matchers.<MovieDTO>hasProperty("title", is("Harry Potter and the Chamber of Secrets"))
+        )
+        );
     }
 
     
     @Test
     public void testFindByTitle() {
-        //TODO
+        //Ved ikke hvorfor den ikke virker
+            given().
+                get("/movie/{title}", m1.getTitle())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("title", contains("Harry Potter and the Philosopher's Stone"));
     }
     
     @Test
@@ -140,8 +159,14 @@ public class MovieResourceTest {
     
      @Test
     public void testFindById() {
+        //Ved ikke hvorfor den ikke virker
         //given().get("/movie/{id}", m2.getId())
-        //TODO
+                    given().
+                get("/movie/{id}", m1.getId())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .body("id", equalTo(12), "title", contains("Harry Potter and the Philosopher's Stone"));
           
     }
 }
