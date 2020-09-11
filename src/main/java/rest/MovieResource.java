@@ -8,6 +8,7 @@ import dtos.MovieDTO;
 //import entities.Movie;
 
 import facades.MovieFacade;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManagerFactory;
@@ -64,25 +65,14 @@ public class MovieResource {
         
     }
 
-    @Path("title/{title}")
+    @Path("/title/{title}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getByTitle(@PathParam("title") String title) {
-        Response.ok().entity(GSON.toJson(FACADE.getMoviesByTitle(title))).build();
-        throw new UnsupportedOperationException();
+    public List<MovieDTO> getByTitle(@PathParam("title") String title) {
+        List<MovieDTO> movieByTitle = FACADE.getMoviesByTitle(title);
+        return movieByTitle;
+        //Response.ok().entity(GSON.toJson(FACADE.getMoviesByTitle(title))).build();
+   
     }
-    
 
-    @POST
-    @Consumes({MediaType.APPLICATION_JSON})
-    public String create(MovieDTO movie) {
-      throw new UnsupportedOperationException();
-    }
-    
-    @PUT
-    @Path("/{id}")
-    @Consumes({MediaType.APPLICATION_JSON})
-    public void update(MovieDTO entity, @PathParam("id") int id) {
-        throw new UnsupportedOperationException();
-    }
 }

@@ -1,0 +1,83 @@
+<html>
+    <head>
+        <title>Eventbubbling</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .myDiv {
+                width: 85px;
+                height: 25px;
+                background-color: yellow;
+                margin: 1px;
+            }
+
+
+        </style>
+    </head>
+    <body>
+        
+        <div id="b1" class="myDiv"></div>
+        <button onclick="myFunction1()"> Click me </button>
+        <div id="b2" class="myDiv"></div>
+        <button onclick="myFunction2()"> Click me </button>
+        <div id="outer"> 
+        <div id ="b3"> </div>
+        <div id ="b4"> </div>
+        <div id ="b5"> </div>
+        <div id ="b6"> </div>
+        <div id ="b7"> </div>
+        <div id ="b8"> </div>
+        <div id ="b9"> </div>
+        <div id ="b10"> </div>
+        <div id ="b11"> </div>
+        <div id ="b12"> </div>
+        <button> Outer click</button>
+        
+        </div>
+        <p id="p1"></p>
+        <button onclick="innerFunction()"> Inner click</button>
+        
+        <script>
+            var outer = document.getElementById("outer");
+            outer.onclick = function(e) {
+                console.log("Clicked");
+                var mee = this;
+                var target = e.target;
+                console.log(mee.id);
+                console.log(target.id);
+            }
+
+            function myFunction1() {
+                document.getElementById("b1").innerHTML = "Hi from: " + "b1";
+                console.log("Hi from: " + document.getElementById("b1").id);
+            }
+            function myFunction2() {
+                document.getElementById("b2").innerHTML = "Hi from: " + "b2";
+                console.log("Hi from: " + document.getElementById("b2").id);
+            }
+
+            document.getElementById("outer").addEventListener("click", function outerFunction() {
+                
+                document.getElementById("p1").innerHTML = document.getElementById("b2").id;
+                document.getElementById("p1").innerHTML = document.getElementById("outer");
+                console.log("Hi from " + document.getElementById("b4").id);
+                console.log("Hi from " + document.getElementById("b5").id);
+                console.log("Hi from " + document.getElementById("b6").id);
+                console.log("Hi from " + document.getElementById("b7").id);
+                console.log("Hi from " + document.getElementById("b8").id);
+                console.log("Hi from " + document.getElementById("b9").id);
+                console.log("Hi from " + document.getElementById("b10").id);
+                console.log("Hi from " + document.getElementById("b11").id);
+                console.log("Hi from " + document.getElementById("b12").id);
+                
+            });
+            function innerFunction() {
+                document.getElementById("p1").innerHTML = document.getElementById("b4");
+            }
+            
+        </script>
+
+
+        <div>TODO write content</div>
+    </body>
+</html>
